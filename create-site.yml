@@ -1,0 +1,174 @@
+---
+- hosts: "{{which_host}}"
+
+  vars_files: ["vars/default.yml"]
+
+  vars_prompt:
+  - name: "which_host"
+    prompt: "Which host to run this on ?"
+    private: no
+
+  - name: "site_server_name"
+    prompt: "Domain/sub-domain to set up"
+    private: no
+
+  - name: "site_id"
+    prompt: "Site ID (Used as the FPM pool, Apache vhost and NGINX vhost"
+    private: no
+
+  - name: "php_install_version"
+    prompt: "PHP Version. Available options are 5.6 or 7.0"
+    private: no
+
+  tasks:
+  - name: Create site directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name | mandatory}}" 
+      state: directory 
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create log directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name | mandatory}}/logs"
+      state: directory
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create tmp directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name | mandatory}}/tmp" 
+      state: directory
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create run directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name | mandatory}}/run" 
+      state: directory
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create public directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name}}/public" 
+      state: directory
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create Welcome file
+    template:
+      src: "templates/welcome.j2"
+      dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/index.php"
+      owner: "{{ server_runs_as }}"
+      group: "{{ server_runs_as_group }}"
+
+  - name: Create FPM pool
+    template:
+      src: "templates/fpm-primary.j2"
+      dest: "/etc/php/{{php_install_version}}/fpm/pool.d/{{site_id}}.conf"
+
+  - name: Create FPM pool config directory
+    file: path="/etc/php/{{php_install_version}}/fpm/pool.d/{{site_id}}.d" state=directory
+
+  - name: Create FPM pool config
+    template:
+      src: "templates/fpm-secondary.j2"
+      dest: "/etc/php/{{php_install_version}}/fpm/pool.d/{{site_id}}.d/main.conf"
+
+  - name: Create Apache vhost
+    template:
+      src: "templates/apache-primary.j2"
+      dest: "/etc/apache2/sites-enabled/{{site_id | mandatory}}.conf"
+
+  - name: Create Apache vhost config directory
+    file: path="/etc/apache2/sites-enabled/{{site_id | mandatory}}.d" state=directory
+
+  - name: Create Apache vhost config
+    template:
+      src: "templates/apache-secondary.j2"
+      dest: "/etc/apache2/sites-enabled/{{site_id}}.d/main.conf"
+
+  - name: Create NGINX vhost
+    template:
+      src: "templates/nginx-primary.j2"
+      dest: "{{ nginx_vhosts_location }}/{{site_id}}.conf"
+
+  - name: Create NGINX vhost config directory
+    file: path="{{ nginx_vhosts_location }}/{{site_id}}.d" state=directory
+
+  - name: Create NGINX vhost config
+    template:
+      src: "templates/nginx-secondary.j2"
+      dest: "{{ nginx_vhosts_location }}/{{site_id}}.d/main.conf"
+
+  - name: Create SSL directory
+    file: 
+      dest: /etc/nginx/ssl
+      state: directory
+    when: site_ssl == 1
+
+  - name: Copy self-signed SSL key
+    copy: 
+      dest: /etc/nginx/ssl/{{site_server_name}}.key
+      src: "{{ssl_key_file_path}}"
+      mode: 0644
+    when: site_ssl == 1 and ssl_selfsigned != 1
+
+  - name: Copy self-signed SSL cert
+    copy: 
+      dest: /etc/nginx/ssl/{{site_server_name}}.crt
+      src: "{{ssl_cert_file_path}}"
+      mode: 0644
+    when: site_ssl == 1 and ssl_selfsigned != 1
+
+  - name: create self-signed SSL cert
+    command: openssl req -new -nodes -x509 -subj "/C=IN/ST=Maharashtra/L=Pune/O=Chaha Chaudhary and Co./CN={{site_server_name}}" -days 3650 -keyout /etc/nginx/ssl/{{site_server_name}}.key -out /etc/nginx/ssl/{{site_server_name}}.crt -extensions v3_ca creates=/etc/nginx/ssl/{{site_server_name}}.crt
+    when: ssl_selfsigned == 1
+    become: yes
+
+  - name: Ensure hosts file entry is present
+    lineinfile: 
+      dest: /etc/hosts
+      regexp: '{{site_server_name}}' 
+      line: '127.0.0.1 {{site_server_name}}'
+    tags: devtools
+
+  - name: Restart NGINX 
+    service: name=nginx state=restarted
+    become: true
+
+  - name: Restart Apache 
+    service: name=apache2 state=restarted
+    become: true
+    
+  - name: Restart FPM 
+    command: "{{fpm_init_script}} restart"
+    become: true
+
+  - name: Create adminer directory
+    file: 
+      path: "{{sites_container}}/{{site_server_name}}/public/adminer" 
+      state: directory
+      owner: "{{ server_runs_as }}" 
+      group: "{{ server_runs_as_group }}"
+    tags:
+      - adminer
+
+  - name: Download Adminer
+    get_url: 
+      url: "{{adminer_download_url}}"
+      dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/adminer/index.php"
+      owner: "{{ server_runs_as }}"
+      group: "{{ server_runs_as_group }}"
+    tags:
+      - adminer
+
+  - name: Download Adminer CSS
+    get_url: 
+      url: "{{adminer_css_download_url}}"
+      dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/adminer/adminer.css"
+      owner: "{{ server_runs_as }}"
+      group: "{{ server_runs_as_group }}"
+    tags:
+      - adminer

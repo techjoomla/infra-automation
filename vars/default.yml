@@ -1,0 +1,67 @@
+---
+# Start section - variables that are used in the deployment script
+apache_listen_port: 81
+apache_listen_ip: "*"
+
+# Disable ssl so that NGINX can use it
+apache_mods_enabled:
+  - rewrite.load
+  - remoteip.load
+
+apache_mods_disabled:
+  - ssl.load
+
+# FPM Vars
+fpm_port: 9000
+
+# Vars for the NGINX - Apache setup
+sites_container: "/var/www"
+nginx_vhosts_location: "/etc/nginx/vhosts.d"
+
+# Start section - configuration variables for Apache, NGINX & FPM
+fpm_pm: "ondemand"
+fpm_pm_max_children: 20
+# End section - configuration variables for Apache, NGINX & FPM
+
+fpm_init_script: "/etc/init.d/php{{php_install_version}}-fpm"
+
+# PHP Variables
+php_packages:
+  - php{{php_install_version}}-common
+  - php{{php_install_version}}-cli
+  - php{{php_install_version}}-dev
+  - php{{php_install_version}}-fpm
+  - php{{php_install_version}}-gd
+  - php{{php_install_version}}-curl
+  - php{{php_install_version}}-imap
+  - php{{php_install_version}}-json
+  - php{{php_install_version}}-opcache
+  - php{{php_install_version}}-xml
+  - php{{php_install_version}}-mbstring
+  - php{{php_install_version}}-mysql
+  - php{{php_install_version}}-mcrypt
+  - php{{php_install_version}}-zip
+  - libpcre3-dev
+# End PHP Variables
+
+# MySQL Packages
+#mysql_packages:
+#  - mysql-server-5.6
+#  - mysql-common-5.6
+
+# Adminer
+adminer_download_url: "http://www.adminer.org/static/download/4.2.5/adminer-4.2.5-mysql-en.php"
+adminer_css_download_url: "https://raw.githubusercontent.com/vrana/adminer/master/designs/nette/adminer.css"
+
+# Install Codeception
+composer_global_packages:
+ - { name: codeception/codeception }
+ 
+# Android SDK
+android_sdks_to_install:
+  - android-24
+  - android-23
+  - android-22
+  - android-21
+
+android_sdk_install_location: "/home/{{server_runs_as}}"

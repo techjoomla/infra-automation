@@ -1,0 +1,22 @@
+AcceptPathInfo on
+DirectoryIndex index.html index.htm index.php
+
+<Directory ${DOCUMENT_ROOT}>
+  AllowOverride All
+  Require all granted
+
+  RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
+  RewriteRule \.php$ - [R=404]
+</Directory>
+
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} .+
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+<Files *.php>
+  SetHandler proxy:${PHP_PROXY_URL}
+</Files>
+
+<Proxy ${PHP_PROXY_URL}>
+  ProxySet timeout=3600 retry=0
+</Proxy>

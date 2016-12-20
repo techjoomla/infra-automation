@@ -1,0 +1,32 @@
+[{{site_id}}]
+
+prefix = {{sites_container}}
+
+user = {{server_runs_as}}
+group = {{server_runs_as_group}}
+
+listen = {{sites_container}}/{{site_server_name}}/run/$pool.php-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 660
+
+env[TMPDIR] = {{sites_container}}/{{site_server_name}}/tmp
+env[TEMP] = {{sites_container}}/{{site_server_name}}/tmp
+env[TMP] = {{sites_container}}/{{site_server_name}}/tmp
+
+access.log = {{sites_container}}/{{site_server_name}}/logs/$pool_php{{php_install_version}}.access.log
+access.format = "%{HTTP_X_FORWARDED_FOR}e - [%t] \"%m %r%Q%q\" %s %l - %P %p %{seconds}d %{bytes}M %{user}C%% %{system}C%% \"%{REQUEST_URI}e\""
+slowlog = {{sites_container}}/{{site_server_name}}/logs/$pool_php{{php_install_version}}.slow.log
+request_slowlog_timeout = 5s
+catch_workers_output = yes
+
+php_value[error_log] = {{sites_container}}/{{site_server_name}}/logs/$pool_php{{php_install_version}}.error.log
+php_value[mail.log] = {{sites_container}}/{{site_server_name}}/logs/$pool_php{{php_install_version}}.mail.log
+php_value[doc_root] = {{sites_container}}/{{site_server_name}}/public
+php_value[upload_tmp_dir] = {{sites_container}}/{{site_server_name}}/tmp
+php_value[session.save_path] = {{sites_container}}/{{site_server_name}}/tmp
+
+pm.status_path = /php-fpm-status
+ping.path = /php-fpm-ping
+
+include = /etc/php/{{php_install_version}}/fpm/pool.d/{{site_id}}.d/*.conf

@@ -1,0 +1,44 @@
+server {
+    listen       80;
+    listen       [::]:80;
+    server_name
+        {{site_server_name}}
+      ;
+
+    root   {{sites_container}}/{{site_server_name}}/public;
+
+    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.access.log  main;
+    error_log  {{sites_container}}/{{site_server_name}}/logs/nginx.error.log;
+
+    proxy_set_header    Host              $host;
+    proxy_set_header    X-Real-IP         $remote_addr;
+    proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+    include {{nginx_vhosts_location}}/{{site_id}}.d/*.conf;
+}
+
+{% if 'site_ssl' %}
+server {
+    listen       443 ssl;
+    listen       [::]:443 ssl;
+    server_name
+        {{site_server_name}}
+      ;
+
+    ssl_certificate_key      ssl/{{site_server_name}}.key;
+    ssl_certificate          ssl/{{site_server_name}}.crt;
+
+    root   {{sites_container}}/{{site_server_name}}/public;
+
+    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.ssl_access.log  main;
+    error_log  {{sites_container}}/{{site_server_name}}/logs/nginx.ssl_error.log;
+
+    proxy_set_header    Host              $host;
+    proxy_set_header    X-Real-IP         $remote_addr;
+    proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Forwarded-SSL   on;
+    proxy_set_header    X-Forwarded-Proto $scheme;
+
+    include {{nginx_vhosts_location}}/{{site_id}}.d/*.conf;
+}
+{% endif %}

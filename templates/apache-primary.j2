@@ -1,0 +1,16 @@
+<VirtualHost {{apache_listen_ip}}:{{apache_listen_port}}>
+  Define DOCUMENT_ROOT "{{sites_container}}/{{site_server_name}}/public"
+  Define PHP_PROXY_URL "unix:{{sites_container}}/{{site_server_name}}/run/{{site_id}}.php-fpm.sock|fcgi://localhost"
+
+  ServerAdmin webmaster@
+  ServerName {{site_server_name}}
+  DocumentRoot ${DOCUMENT_ROOT}
+  
+  ErrorLog "{{sites_container}}/{{site_server_name}}/logs/apache.error.log"
+  CustomLog "{{sites_container}}/{{site_server_name}}/logs/apache.access.log" common
+
+  RemoteIPHeader X-Real-IP
+  SetEnvIf X-Forwarded-SSL on HTTPS=on
+
+  IncludeOptional /etc/apache2/sites-enabled/{{site_id}}.d/*.conf
+</VirtualHost>

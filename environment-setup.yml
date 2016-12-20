@@ -1,0 +1,228 @@
+---
+- hosts: hosts
+
+  vars_files: ["vars/default.yml"]
+
+  become: true
+  gather_facts: true
+  
+  pre_tasks:
+  - name: 'install python2'
+    raw: sudo apt-get -y install python-simplejson
+    when: ansible_distribution_version == '16.04'
+    tags: python
+
+  - name: Add ondrej PHP repositories
+    apt_repository: repo='ppa:ondrej/php' state=present
+
+  - name: Add ondrej Apache repositories
+    apt_repository: repo='ppa:ondrej/apache2' state=present
+
+  - name: Add ondrej Ansible repositories
+    apt_repository: repo='ppa:ansible/ansible' state=present
+    tags: devtools
+
+  - name: Update apt cache
+    apt: update_cache=yes
+    tags:
+      - aptupdate
+
+  - name: Create system User
+    user: 
+      name: "{{newuser_username}}"
+      comment: "{{newuser_name}}"
+      generate_ssh_key: yes
+    tags:
+      - createuser
+
+  - name: Expire password
+    command: chage -d 0 {{newuser_username}}
+    tags:
+      - createuser
+
+#  - name: Install nautilus-open-terminal
+#    apt: name=nautilus-open-terminal state=present
+
+#  - name: Install nautilus-image-converter
+#    apt: name=nautilus-image-converter state=present
+
+  roles:
+    - { role: cmprescott.chrome, tags: devtools }
+    - { role: geerlingguy.apache }
+    - { role: geerlingguy.php, php_install_version: "5.6" }
+    - { role: geerlingguy.php, php_install_version: "7.0" }
+    - { role: geerlingguy.apache-php-fpm }
+    - { role: bash_command, command: 'sudo service apache2 stop' }
+    - { role: geerlingguy.nginx }
+    - role: geerlingguy.mysql
+      ignore_errors: yes
+      tags:
+      - devtools
+      - mysql
+    - { role: geerlingguy.composer, tags: devtools }
+#    - { role: nicolai86.phantomjs }
+    - role: geerlingguy.java
+      ignore_errors: yes
+      when: "ansible_os_family == 'Debian'"
+      java_packages:
+        - openjdk-8-jdk
+      tags:
+      - devtools
+      - java
+
+  tasks:
+  - name: Install Geany and plugins
+    apt: name={{item}} state=present 
+    with_items:
+    - geany
+    - geany-plugins
+    - geany-plugins-common
+    - geany-plugin-addons
+    - geany-plugin-prettyprinter
+    tags: devtools
+
+  - name: Install GIT
+    apt: name=git-core state=present
+    tags: devtools
+
+  - name: Register Joomla Standards path 
+    shell: echo `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla
+    register: phpcs_joomla_path
+    tags:
+    - phpcs
+    - devtools
+
+  - name: stat Joomla Standards path
+    stat: path="{{phpcs_joomla_path.stdout}}/ruleset.xml"
+    register: phpcs_joomla_path_stat
+    tags:
+    - phpcs
+    - devtools
+
+  - name: Create Joomla Standards path 
+    file:
+      path: "{{phpcs_joomla_path}}"
+      state: directory
+      mode: 0755
+    tags:
+    - phpcs
+    - devtools
+
+  - name: Install PHPCS via PEAR
+    shell: "pear install -f PHP_CodeSniffer-1.5.6"
+    tags: 
+    - devtools
+    - phpcs
+
+  - name: Install Joomla Standard
+    shell: "git clone https://github.com/joomla/coding-standards.git `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla"
+    when: phpcs_joomla_path_stat.stat.exists == False
+    tags: 
+    - devtools
+    - phpcs
+
+  - name: Setup NGINX to look into vhosts.d folder for additional server & location
+    lineinfile: 
+      dest: /etc/nginx/nginx.conf
+      state: present
+      line: "    include /etc/nginx/vhosts.d/*.conf;"
+      regexp: "sites-enabled"
+
+  - name: Create vhosts.d folder for additional server & location
+    file:
+      name: "{{ nginx_vhosts_location }}"
+      state: directory
+
+  - name: Install codeception
+    get_url: 
+      url: http://codeception.com/codecept.phar
+      dest: /usr/bin/codecept
+      mode: 0755
+      timeout: 1000
+    tags: devtools
+
+  - name: Install FileZilla
+    apt: name=filezilla
+    tags: devtools
+
+  - name: Install VIM
+    apt: name=vim
+
+  - name: Install Meld
+    apt: name=meld state=present
+    tags: devtools
+
+  - name: Install ansible
+    apt: name=ansible state=present
+    tags: 
+    - devtools
+    - ansible
+
+  - name: Remove default NGINX vhosts file
+    file:
+      name: "/etc/nginx/sites-enabled/default"
+      state: absent
+
+  - name: Remove default Apache vhosts file
+    file:
+      name: "/etc/apache2/sites-enabled/vhosts.conf"
+      state: absent
+
+  - name: Remove default Apache 000-default file
+    file:
+      name: "/etc/apache2/sites-enabled/000-default.conf"
+      state: absent
+
+  - name: Remove default FPM Pool
+    file:
+      name: "/etc/php/{{item}}/fpm/pool.d/www.conf"
+      state: absent
+    with_items:
+    - "5.6"
+    - "7.0"
+
+  - name: chmod hosts file
+    file:
+      path: "/etc/hosts"
+      mode: "og+w"
+    tags: devtools
+
+  - name: Allow user to restart Apache
+    lineinfile: 
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service apache2 *"
+      validate: 'visudo -cf %s'
+    tags: devtools
+
+  - name: Allow user to restart NGINX
+    lineinfile: 
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service nginx *"
+      validate: 'visudo -cf %s'
+    tags: devtools
+
+  - name: Allow user to restart FPM (PHP 5.6)
+    lineinfile: 
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php5.6-fpm *"
+      validate: 'visudo -cf %s'
+    tags: devtools
+
+  - name: Allow user to restart FPM (PHP 7.0)
+    lineinfile: 
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php7.0-fpm *"
+      validate: 'visudo -cf %s'
+    tags: devtools
+
+  - name: Allow user to restart MySQL
+    lineinfile: 
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service mysql *"
+      validate: 'visudo -cf %s'
+    tags: devtools
