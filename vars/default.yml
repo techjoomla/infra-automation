@@ -16,7 +16,7 @@ fpm_port: 9000
 
 # Vars for the NGINX - Apache setup
 sites_container: "/var/www"
-nginx_vhosts_location: "/etc/nginx/vhosts.d"
+nginx_vhosts_location: "/etc/nginx/sites-enabled"
 
 # Start section - configuration variables for Apache, NGINX & FPM
 fpm_pm: "ondemand"
