@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Caleb Woods
+  description: run any bash command as a role
+  company: RoleModel
+  license: MIT
+  min_ansible_version: 1.5
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+  categories:
+    - system
+    - development
+
+version: 1.1.0
+dependencies: []

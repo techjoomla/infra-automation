@@ -52,7 +52,7 @@
     - { role: geerlingguy.php, php_install_version: "5.6" }
     - { role: geerlingguy.php, php_install_version: "7.0" }
     - { role: geerlingguy.apache-php-fpm }
-    - { role: bash_command, command: 'sudo service apache2 stop' }
+    - { role: calebwoods.bash_command, command: 'sudo service apache2 stop' }
     - { role: geerlingguy.nginx }
     - role: geerlingguy.mysql
       ignore_errors: yes
