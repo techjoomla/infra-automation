@@ -5,6 +5,7 @@ galaxy_info:
   company: RoleModel
   license: MIT
   min_ansible_version: 1.5
+  version: 1.1.0
 
   platforms:
     - name: Ubuntu
@@ -15,5 +16,4 @@ galaxy_info:
     - system
     - development
 
-version: 1.1.0
 dependencies: []
