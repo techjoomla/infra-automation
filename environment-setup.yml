@@ -134,6 +134,11 @@
       name: "{{ nginx_vhosts_location }}"
       state: directory
 
+  - name: Create NGINX Log format
+    template:
+      src: "templates/nginx-logformat.j2"
+      dest: "/etc/nginx/conf.d/ttpl_nginx_log.conf"
+
   - name: Install codeception
     get_url: 
       url: http://codeception.com/codecept.phar

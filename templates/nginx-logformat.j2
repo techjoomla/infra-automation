@@ -1,0 +1,5 @@
+# Log format for proxy logging
+log_format ttpl_nginx '$remote_addr - $remote_user [$time_local] '
+   '"$request" $status $body_bytes_sent '
+   '$request_time $upstream_response_time $pipe'
+   '"$http_referer" "$http_user_agent" ';

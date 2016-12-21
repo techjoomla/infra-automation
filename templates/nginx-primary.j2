@@ -7,7 +7,7 @@ server {
 
     root   {{sites_container}}/{{site_server_name}}/public;
 
-    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.access.log  main;
+    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.access.log ttpl_nginx;
     error_log  {{sites_container}}/{{site_server_name}}/logs/nginx.error.log;
 
     proxy_set_header    Host              $host;
@@ -30,7 +30,7 @@ server {
 
     root   {{sites_container}}/{{site_server_name}}/public;
 
-    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.ssl_access.log  main;
+    access_log  {{sites_container}}/{{site_server_name}}/logs/nginx.ssl_access.log ttpl_nginx;
     error_log  {{sites_container}}/{{site_server_name}}/logs/nginx.ssl_error.log;
 
     proxy_set_header    Host              $host;
