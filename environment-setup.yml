@@ -122,18 +122,6 @@
     - devtools
     - phpcs
 
-  - name: Setup NGINX to look into vhosts.d folder for additional server & location
-    lineinfile: 
-      dest: /etc/nginx/nginx.conf
-      state: present
-      line: "    include /etc/nginx/vhosts.d/*.conf;"
-      regexp: "sites-enabled"
-
-  - name: Create vhosts.d folder for additional server & location
-    file:
-      name: "{{ nginx_vhosts_location }}"
-      state: directory
-
   - name: Create NGINX Log format
     template:
       src: "templates/nginx-logformat.j2"
