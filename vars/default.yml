@@ -1,8 +1,4 @@
 ---
-# User and group
-server_runs_as : "{{ lookup('env', 'MACHINE_USER') }}"
-server_runs_as_group : "{{ lookup('env', 'MACHINE_USER') }}"
-
 # Start section - variables that are used in the deployment script
 apache_listen_port: 81
 apache_listen_ip: "*"
@@ -69,3 +65,7 @@ android_sdks_to_install:
   - android-21
 
 android_sdk_install_location: "/home/{{server_runs_as}}"
+
+# Site setup vars
+site_ssl: 1
+ssl_selfsigned: 1

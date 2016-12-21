@@ -79,6 +79,7 @@
     - geany-plugins-common
     - geany-plugin-addons
     - geany-plugin-prettyprinter
+    - openssh-server
     tags: devtools
 
   - name: Install GIT
