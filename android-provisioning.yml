@@ -1,0 +1,26 @@
+---
+- hosts: hosts
+
+  vars_files: ["vars/default.yml"]
+
+  become: true
+
+  pre_tasks:
+  - name: Install node & npm
+    apt: 
+      name: "{{item}}"
+      state: present
+    with_items:
+    - nodejs
+    - npm
+
+  - name: Install cordova and ionic globally
+    npm:
+      name: "{{item}}"
+      global: yes
+    with_items:
+    - ionic
+    - cordova
+
+  roles:
+  - { role: nickpack.android-sdk }

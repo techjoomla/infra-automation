@@ -109,7 +109,7 @@
     - phpcs
     - devtools
 
-  - name: Install PHPCS via PEAR
+  - name: Install PHPCS 1.5.6 via PEAR
     shell: "pear install -f PHP_CodeSniffer-1.5.6"
     tags: 
     - devtools
