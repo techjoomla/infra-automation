@@ -160,31 +160,31 @@
     tags: lamp
 
 - name: Remove default Apache vhosts file
-    file:
-      name: "/etc/apache2/sites-enabled/vhosts.conf"
-      state: absent
-    tags: lamp
+  file:
+    name: "/etc/apache2/sites-enabled/vhosts.conf"
+    state: absent
+  tags: lamp
 
 - name: Remove default Apache 000-default file
-    file:
-      name: "/etc/apache2/sites-enabled/000-default.conf"
-      state: absent
-    tags: lamp
+  file:
+    name: "/etc/apache2/sites-enabled/000-default.conf"
+    state: absent
+  tags: lamp
 
 - name: Remove default FPM Pool
-    file:
-      name: "/etc/php/{{item}}/fpm/pool.d/www.conf"
-      state: absent
-    tags: lamp
-    with_items:
-    - "5.6"
-    - "7.0"
+  file:
+    name: "/etc/php/{{item}}/fpm/pool.d/www.conf"
+    state: absent
+  tags: lamp
+  with_items:
+  - "5.6"
+  - "7.0"
 
 - name: chmod hosts file
-    file:
-      path: "/etc/hosts"
-      mode: "og+w"
-    tags: devtools
+  file:
+    path: "/etc/hosts"
+    mode: "og+w"
+  tags: devtools
 
   - name: Allow user to restart Apache
     lineinfile:
@@ -196,13 +196,13 @@
     - devtools
 
 - name: Allow user to restart NGINX
-    lineinfile:
-      dest: /etc/sudoers
-      state: present
-      line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service nginx *"
-      validate: 'visudo -cf %s'
-    tags:
-    - devtools
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service nginx *"
+    validate: 'visudo -cf %s'
+  tags:
+  - devtools
 
   - name: Allow user to restart FPM (PHP 5.6)
     lineinfile:
