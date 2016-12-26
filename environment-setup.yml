@@ -48,12 +48,12 @@
 
   roles:
     - { role: cmprescott.chrome, tags: devtools }
-    - { role: geerlingguy.apache }
-    - { role: geerlingguy.php, php_install_version: "5.6" }
-    - { role: geerlingguy.php, php_install_version: "7.0" }
+    - { role: geerlingguy.apache, tags: lamp }
+    - { role: geerlingguy.php, tags: lamp, php_install_version: "5.6" }
+    - { role: geerlingguy.php, tags: lamp, php_install_version: "7.0" }
     - { role: geerlingguy.apache-php-fpm }
     - { role: calebwoods.bash_command, command: 'sudo service apache2 stop' }
-    - { role: geerlingguy.nginx }
+    - { role: geerlingguy.nginx, tags: lamp }
     - role: geerlingguy.mysql
       ignore_errors: yes
       tags:
@@ -126,6 +126,7 @@
     template:
       src: "templates/nginx-logformat.j2"
       dest: "/etc/nginx/conf.d/ttpl_nginx_log.conf"
+    tags: lamp
 
   - name: Install codeception
     get_url: 
@@ -156,26 +157,30 @@
     file:
       name: "/etc/nginx/sites-enabled/default"
       state: absent
+    tags: lamp
 
-  - name: Remove default Apache vhosts file
+- name: Remove default Apache vhosts file
     file:
       name: "/etc/apache2/sites-enabled/vhosts.conf"
       state: absent
+    tags: lamp
 
-  - name: Remove default Apache 000-default file
+- name: Remove default Apache 000-default file
     file:
       name: "/etc/apache2/sites-enabled/000-default.conf"
       state: absent
+    tags: lamp
 
-  - name: Remove default FPM Pool
+- name: Remove default FPM Pool
     file:
       name: "/etc/php/{{item}}/fpm/pool.d/www.conf"
       state: absent
+    tags: lamp
     with_items:
     - "5.6"
     - "7.0"
 
-  - name: chmod hosts file
+- name: chmod hosts file
     file:
       path: "/etc/hosts"
       mode: "og+w"
@@ -187,15 +192,17 @@
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service apache2 *"
       validate: 'visudo -cf %s'
-    tags: devtools
+    tags: 
+    - devtools
 
-  - name: Allow user to restart NGINX
+- name: Allow user to restart NGINX
     lineinfile: 
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service nginx *"
       validate: 'visudo -cf %s'
-    tags: devtools
+    tags: 
+    - devtools
 
   - name: Allow user to restart FPM (PHP 5.6)
     lineinfile: 
@@ -203,7 +210,8 @@
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php5.6-fpm *"
       validate: 'visudo -cf %s'
-    tags: devtools
+    tags: 
+    - devtools
 
   - name: Allow user to restart FPM (PHP 7.0)
     lineinfile: 
