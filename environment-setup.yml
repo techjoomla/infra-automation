@@ -5,7 +5,7 @@
 
   become: true
   gather_facts: true
-  
+
   pre_tasks:
   - name: 'install python2'
     raw: sudo apt-get -y install python-simplejson
@@ -28,7 +28,7 @@
       - aptupdate
 
   - name: Create system User
-    user: 
+    user:
       name: "{{newuser_username}}"
       comment: "{{newuser_name}}"
       generate_ssh_key: yes
@@ -72,7 +72,7 @@
 
   tasks:
   - name: Install Geany and plugins
-    apt: name={{item}} state=present 
+    apt: name={{item}} state=present
     with_items:
     - geany
     - geany-plugins
@@ -86,7 +86,7 @@
     apt: name=git-core state=present
     tags: devtools
 
-  - name: Register Joomla Standards path 
+  - name: Register Joomla Standards path
     shell: echo `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla
     register: phpcs_joomla_path
     tags:
@@ -100,7 +100,7 @@
     - phpcs
     - devtools
 
-  - name: Create Joomla Standards path 
+  - name: Create Joomla Standards path
     file:
       path: "{{phpcs_joomla_path}}"
       state: directory
@@ -111,14 +111,14 @@
 
   - name: Install PHPCS 1.5.6 via PEAR
     shell: "pear install -f PHP_CodeSniffer-1.5.6"
-    tags: 
+    tags:
     - devtools
     - phpcs
 
   - name: Install Joomla Standard
     shell: "git clone https://github.com/joomla/coding-standards.git `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla"
     when: phpcs_joomla_path_stat.stat.exists == False
-    tags: 
+    tags:
     - devtools
     - phpcs
 
@@ -129,7 +129,7 @@
     tags: lamp
 
   - name: Install codeception
-    get_url: 
+    get_url:
       url: http://codeception.com/codecept.phar
       dest: /usr/bin/codecept
       mode: 0755
@@ -149,7 +149,7 @@
 
   - name: Install ansible
     apt: name=ansible state=present
-    tags: 
+    tags:
     - devtools
     - ansible
 
@@ -187,34 +187,34 @@
     tags: devtools
 
   - name: Allow user to restart Apache
-    lineinfile: 
+    lineinfile:
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service apache2 *"
       validate: 'visudo -cf %s'
-    tags: 
+    tags:
     - devtools
 
 - name: Allow user to restart NGINX
-    lineinfile: 
+    lineinfile:
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service nginx *"
       validate: 'visudo -cf %s'
-    tags: 
+    tags:
     - devtools
 
   - name: Allow user to restart FPM (PHP 5.6)
-    lineinfile: 
+    lineinfile:
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php5.6-fpm *"
       validate: 'visudo -cf %s'
-    tags: 
+    tags:
     - devtools
 
   - name: Allow user to restart FPM (PHP 7.0)
-    lineinfile: 
+    lineinfile:
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php7.0-fpm *"
@@ -222,7 +222,7 @@
     tags: devtools
 
   - name: Allow user to restart MySQL
-    lineinfile: 
+    lineinfile:
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /usr/sbin/service mysql *"

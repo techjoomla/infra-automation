@@ -23,4 +23,4 @@
     - cordova
 
   roles:
-  - { role: nickpack.android-sdk }
+  - { role: nickp666.android-sdk }
