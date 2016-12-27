@@ -130,6 +130,12 @@
       dest: "/etc/nginx/conf.d/ttpl_nginx_log.conf"
     tags: lamp
 
+  - name: Create logrotate config
+    template:
+      src: "templates/logrotate.j2"
+      dest: "/etc/logrotate.d/ttpl"
+    tags: lamp
+
   - name: Install codeception
     get_url:
       url: http://codeception.com/codecept.phar
