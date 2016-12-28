@@ -57,12 +57,8 @@
    - role: geerlingguy.apache
       tags: lamp
 
-   - role: geerlingguy.php
-      php_install_version: "{{item}}"
-      tags: lamp
-      with_items:
-      - "5.6"
-      - "7.0"
+   - { role: geerlingguy.php, php_install_version: "5.6", tags: lamp }
+   - { role: geerlingguy.php, php_install_version: "7.0", tags: lamp }
 
     - { role: geerlingguy.apache-php-fpm, tags: lamp }
     - role: calebwoods.bash_command
