@@ -49,20 +49,43 @@
 #    apt: name=nautilus-image-converter state=present
 
   roles:
-    - { role: cmprescott.chrome, tags: devtools }
+    - role: cmprescott.chrome
+      tags:
+      - devtools
+      - chrome
+
     - { role: geerlingguy.apache, tags: lamp }
-    - { role: geerlingguy.php, tags: lamp, php_install_version: "5.6" }
-    - { role: geerlingguy.php, tags: lamp, php_install_version: "7.0" }
+
+    - role: geerlingguy.php
+      tags: lamp
+      php_install_version: "{{item}}"
+      with_items:
+      - "5.6"
+      - "7.0"
+
     - { role: geerlingguy.apache-php-fpm, tags: lamp }
-    - { role: calebwoods.bash_command, command: 'sudo service apache2 stop' }
+    - role: calebwoods.bash_command
+      command: 'sudo service apache2 stop'
+      tags: lamp
+
     - { role: geerlingguy.nginx, tags: lamp }
+
     - role: geerlingguy.mysql
       ignore_errors: yes
       tags:
       - devtools
       - mysql
-    - { role: geerlingguy.composer, tags: devtools }
-    - { role: nicolai86.phantomjs }
+
+    - role: geerlingguy.composer
+      tags:
+      - devtools
+      - composer
+
+    - role: nicolai86.phantomjs
+      tags:
+      - devtools
+      - phantomjs
+
     - role: geerlingguy.java
       ignore_errors: yes
       when: "ansible_os_family == 'Debian'"
