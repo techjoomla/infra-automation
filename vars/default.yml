@@ -72,4 +72,4 @@ android_sdks_to_install:
 
 # Phantom JS
 phantomjs_version: "2.1.1"
-phantomjs_url: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{phantomjs_version}}-linux-x86_64.tar.bz2"
+phantomjs_url: "https://github.com/ariya/phantomjs/archive/{{phantomjs_version}}.tar.gz"
