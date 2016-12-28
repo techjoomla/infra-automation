@@ -82,6 +82,7 @@
       tags:
       - devtools
       - phantomjs
+      ignore_errors: yes
 
     - role: geerlingguy.java
       ignore_errors: yes
