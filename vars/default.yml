@@ -69,3 +69,7 @@ android_sdks_to_install:
   - android-21
 
 #android_sdk_install_location: "/home/{{server_runs_as}}"
+
+# Phantom JS
+phantomjs_version: "2.1.1"
+phantomjs_url: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{phantomjs_version}}-linux-x86_64.tar.bz2"
