@@ -62,7 +62,7 @@
       - devtools
       - mysql
     - { role: geerlingguy.composer, tags: devtools }
-#    - { role: nicolai86.phantomjs }
+    - { role: nicolai86.phantomjs }
     - role: geerlingguy.java
       ignore_errors: yes
       when: "ansible_os_family == 'Debian'"
