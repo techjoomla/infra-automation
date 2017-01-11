@@ -72,6 +72,7 @@
       tags:
       - devtools
       - mysql
+      - lamp
 
     - role: geerlingguy.composer
       tags:
@@ -165,6 +166,9 @@
       timeout: 1000
     tags: devtools
 
+  - name: Install restricted extras
+    apt: name=ubuntu-restricted-extras state=present
+
   - name: Install FileZilla
     apt: name=filezilla
     tags: devtools
@@ -181,6 +185,10 @@
     tags:
     - devtools
     - ansible
+
+  - name: Install VLC
+    apt: name=vlc state=present
+    tags: vlc
 
   - name: Remove default NGINX vhosts file
     file:
