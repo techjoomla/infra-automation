@@ -22,44 +22,44 @@
 
   tasks:
   - name: Create site directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name | mandatory}}" 
-      state: directory 
-      owner: "{{ server_runs_as }}" 
+    file:
+      path: "{{sites_container}}/{{site_server_name[0] | mandatory}}"
+      state: directory
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
   - name: Create log directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name | mandatory}}/logs"
+    file:
+      path: "{{sites_container}}/{{site_server_name[0] | mandatory}}/logs"
       state: directory
-      owner: "{{ server_runs_as }}" 
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
   - name: Create tmp directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name | mandatory}}/tmp" 
+    file:
+      path: "{{sites_container}}/{{site_server_name[0] | mandatory}}/tmp"
       state: directory
-      owner: "{{ server_runs_as }}" 
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
   - name: Create run directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name | mandatory}}/run" 
+    file:
+      path: "{{sites_container}}/{{site_server_name[0] | mandatory}}/run"
       state: directory
-      owner: "{{ server_runs_as }}" 
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
   - name: Create public directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name}}/public" 
+    file:
+      path: "{{sites_container}}/{{site_server_name[0]}}/public"
       state: directory
-      owner: "{{ server_runs_as }}" 
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
   - name: Create Welcome file
     template:
       src: "templates/welcome.j2"
-      dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/index.php"
+      dest: "{{ sites_container }}/{{ site_server_name[0] | mandatory }}/public/index.php"
       owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
@@ -103,21 +103,21 @@
       dest: "{{ nginx_vhosts_location }}/{{site_id}}.d/main.conf"
 
   - name: Create SSL directory
-    file: 
+    file:
       dest: /etc/nginx/ssl
       state: directory
     when: site_ssl == 1
 
   - name: Copy self-signed SSL key
-    copy: 
-      dest: /etc/nginx/ssl/{{site_server_name}}.key
+    copy:
+      dest: /etc/nginx/ssl/{{site_server_name[0]}}.key
       src: "{{ssl_key_file_path}}"
       mode: 0644
     when: site_ssl == 1 and ssl_selfsigned != 1
 
   - name: Copy self-signed SSL cert
-    copy: 
-      dest: /etc/nginx/ssl/{{site_server_name}}.crt
+    copy:
+      dest: /etc/nginx/ssl/{{site_server_name[0]}}.crt
       src: "{{ssl_cert_file_path}}"
       mode: 0644
     when: site_ssl == 1 and ssl_selfsigned != 1
@@ -128,35 +128,35 @@
     become: yes
 
   - name: Ensure hosts file entry is present
-    lineinfile: 
+    lineinfile:
       dest: /etc/hosts
-      regexp: '{{site_server_name}}' 
-      line: '127.0.0.1 {{site_server_name}}'
+      regexp: '{{ site_server_name[0] }}'
+      line: '127.0.0.1 {{ site_server_name[0] }}'
     tags: devtools
 
-  - name: Restart NGINX 
+  - name: Restart NGINX
     service: name=nginx state=restarted
     become: true
 
-  - name: Restart Apache 
+  - name: Restart Apache
     service: name=apache2 state=restarted
     become: true
-    
-  - name: Restart FPM 
+
+  - name: Restart FPM
     command: "{{fpm_init_script}} restart"
     become: true
 
   - name: Create adminer directory
-    file: 
-      path: "{{sites_container}}/{{site_server_name}}/public/adminer" 
+    file:
+      path: "{{sites_container}}/{{site_server_name}}/public/adminer"
       state: directory
-      owner: "{{ server_runs_as }}" 
+      owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
     tags:
       - adminer
 
   - name: Download Adminer
-    get_url: 
+    get_url:
       url: "{{adminer_download_url}}"
       dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/adminer/index.php"
       owner: "{{ server_runs_as }}"
@@ -165,7 +165,7 @@
       - adminer
 
   - name: Download Adminer CSS
-    get_url: 
+    get_url:
       url: "{{adminer_css_download_url}}"
       dest: "{{ sites_container }}/{{ site_server_name | mandatory }}/public/adminer/adminer.css"
       owner: "{{ server_runs_as }}"
