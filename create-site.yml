@@ -8,10 +8,6 @@
     prompt: "Which host to run this on ?"
     private: no
 
-  - name: "site_server_name"
-    prompt: "Domain/sub-domain to set up"
-    private: no
-
   - name: "site_id"
     prompt: "Site ID (Used as the FPM pool, Apache vhost and NGINX vhost"
     private: no
