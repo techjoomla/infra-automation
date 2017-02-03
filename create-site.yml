@@ -21,6 +21,10 @@
     private: no
 
   tasks:
+  - name: Set facts
+    set_fact:
+      site_server_name: "{{site_server_name | default([]) + [site_domain] }}"    
+
   - name: Create site directory
     file:
       path: "{{sites_container}}/{{site_server_name[0] | mandatory}}"
