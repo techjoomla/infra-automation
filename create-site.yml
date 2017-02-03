@@ -42,6 +42,11 @@
       owner: "{{ server_runs_as }}"
       group: "{{ server_runs_as_group }}"
 
+  - name: Create log directory
+    file:
+      path: "/var/log/nginx/{{ site_id }}"
+      state: directory
+
   - name: Create tmp directory
     file:
       path: "{{sites_container}}/{{site_server_name[0] | mandatory}}/tmp"
