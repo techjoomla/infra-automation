@@ -21,9 +21,18 @@
     private: no
 
   tasks:
-  - name: Set facts
+  - name: Set domain
     set_fact:
-      site_server_name: "{{site_server_name | default([]) }} + {{ [site_domain] }}"    
+      site_server_name: "{{site_server_name | default([]) }} + {{ [site_domain] }}"
+    when: site_domain is defined
+
+  - name: Set upstreams
+    set_fact:
+      upstreams:
+        - name: "{{ site_id }}"
+        - config_lines: []
+        - ip: ["127.0.0.1:80"]
+    when: upstreams is not defined
 
   - name: Create site directory
     file:
