@@ -26,7 +26,7 @@
     set_fact:
       upstreams:
         - name: "{{ site_id }}"
-        - config_lines: []
+        - config_lines: [""]
         - ip: ["127.0.0.1:80"]
     when: upstreams is not defined
 
