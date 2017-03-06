@@ -170,6 +170,10 @@
   - name: Install restricted extras
     apt: name=ubuntu-restricted-extras state=present
 
+  - name: Install npm
+    apt: name=npm
+    tags: devtools
+
   - name: Install FileZilla
     apt: name=filezilla
     tags: devtools
