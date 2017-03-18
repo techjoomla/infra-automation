@@ -59,10 +59,10 @@
 
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Your app {{ site_server_name }} is ready</h1>
+                <h1>Your app {{ site_server_name[0] }} is ready</h1>
                 <p class="lead">The files for this application are located at the following path </p>
                 <ul class="list-unstyled">
-                    <li><pre>{{ sites_container }}/{{ site_server_name }}/public</pre></li>
+                    <li><pre>{{ sites_container }}/{{ site_server_name[0] }}/public</pre></li>
                     <li>You can remove the index.php (this file) from the folder and start putting your own files</li>
                 </ul>
             </div>
