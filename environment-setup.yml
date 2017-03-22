@@ -49,6 +49,21 @@
 #    apt: name=nautilus-image-converter state=present
 
   roles:
+    - { 
+         role: romaincabassot.ansible-ocsinventory-agent, 
+         ocsinventory_launch_options: "--server=http://172.132.45.200/ocsinventory",
+         ocsinventory_launch_after_install: true,
+         ocsinventory_setup_cronjob: true,
+         ocsinventory_cronjob_name: "ocsinventory-agent",
+         ocsinventory_cronjob_user: "root",
+         ocsinventory_cronjob_month: "*",
+         ocsinventory_cronjob_weekday: "*",
+         ocsinventory_cronjob_day: "*",
+         ocsinventory_cronjob_hour: "15",
+         ocsinventory_cronjob_minute: "0",
+         tags: workstation
+       }
+
     - role: cmprescott.chrome
       tags:
       - devtools

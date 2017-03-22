@@ -1,0 +1,104 @@
+image: docker:latest
+
+stages:
+  - test
+
+variables:
+  DOCKER_DRIVER: aufs
+  ANSIBLE1_9: "1.9.6"
+  ANSIBLE2_0: "2.0.2"
+  ANSIBLE2_1: "2.1.3"
+  ANSIBLE2_2: "2.2.0"
+
+services:
+- docker:dind
+
+.template:testing_distro: &testing_distro
+  # Run only on docker tagged runners
+  tags: [ "docker" ]
+  stage: test
+  script:
+  - /bin/sh ${CI_PROJECT_DIR}/tests/docker.sh "${distro}" "${distro_version}" "${init}" "${run_opts}" "${ansible_version}" "${CI_PROJECT_DIR}"
+
+testing:debian7_ansible2.2:
+  variables:
+    distro: "debian"
+    distro_version: "7"
+    init: "/sbin/init"
+    run_opts: ""
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+
+testing:debian8_ansible2.2:
+  variables:
+    distro: "debian"
+    distro_version: "8"
+    init: "/sbin/init"
+    run_opts: ""
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+
+testing:ubuntu14.04_ansible2.2:
+  variables:
+    distro: "ubuntu"
+    distro_version: "14.04"
+    init: "/sbin/init"
+    run_opts: ""
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+
+testing:ubuntu16.04_ansible2.2:
+  variables:
+    distro: "ubuntu"
+    distro_version: "16.04"
+    init: "/lib/systemd/systemd"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+
+testing:centos6_ansible2.2:
+  variables:
+    distro: "centos"
+    distro_version: "6"
+    init: "/sbin/init"
+    run_opts: ""
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+
+
+testing:centos7_ansible1.9:
+  variables:
+    distro: "centos"
+    distro_version: "7"
+    init: "/usr/lib/systemd/systemd"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: ${ANSIBLE1_9}
+  <<: *testing_distro
+
+testing:centos7_ansible2.0:
+  variables:
+    distro: "centos"
+    distro_version: "7"
+    init: "/usr/lib/systemd/systemd"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: ${ANSIBLE2_0}
+  <<: *testing_distro
+
+testing:centos7_ansible2.1:
+  variables:
+    distro: "centos"
+    distro_version: "7"
+    init: "/usr/lib/systemd/systemd"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: ${ANSIBLE2_1}
+  <<: *testing_distro
+
+testing:centos7_ansible2.2:
+  variables:
+    distro: "centos"
+    distro_version: "7"
+    init: "/usr/lib/systemd/systemd"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: ${ANSIBLE2_2}
+  <<: *testing_distro
+

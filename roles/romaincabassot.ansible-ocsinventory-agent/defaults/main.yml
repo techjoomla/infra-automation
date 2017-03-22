@@ -1,0 +1,33 @@
+---
+# Ocsinventory launch options
+# ---------------------------
+# The path to the ocsinventory binary file is defined in the OS vars or can be overriden
+# ocsinventory_binary
+# The options to add when invoking the ocs inventory agent binary
+ocsinventory_launch_options: "--local=/var/lib/ocsinventory-agent"
+# If it launches the host inventory after an installation of the agent
+ocsinventory_launch_after_install: true
+
+# Cronjob options
+# ---------------
+# True to create a cronjob for host inventory
+ocsinventory_setup_cronjob: true
+# Name of the cronjob task
+ocsinventory_cronjob_name: "ocsinventory-agent"
+# User running the job
+ocsinventory_cronjob_user: "root"
+# When to execute the job
+ocsinventory_cronjob_month: "*"
+ocsinventory_cronjob_weekday: "*"
+ocsinventory_cronjob_day: "*"
+ocsinventory_cronjob_hour: "6"
+ocsinventory_cronjob_minute: "0"
+
+# Installation package configuration
+# ----------------------------------
+# Name of the package to install
+ocsinventory_package_name: "ocsinventory-agent"
+# Name of the yum package's repository
+ocsinventory_yum_repository: "remi"
+# Apt ocsinventory agent target-release (-t, --target-release, --default-release )
+ocsinventory_apt_target_release: ""
