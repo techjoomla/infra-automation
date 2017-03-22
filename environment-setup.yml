@@ -51,7 +51,7 @@
   roles:
     - { 
          role: romaincabassot.ansible-ocsinventory-agent, 
-         ocsinventory_launch_options: "--server=http://172.132.45.200/ocsinventory",
+         ocsinventory_launch_options: "--server={{ocs_server_url}}",
          ocsinventory_launch_after_install: true,
          ocsinventory_setup_cronjob: true,
          ocsinventory_cronjob_name: "ocsinventory-agent",

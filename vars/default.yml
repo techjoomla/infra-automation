@@ -73,3 +73,6 @@ android_sdks_to_install:
 # Phantom JS
 phantomjs_version: "2.1.1"
 phantomjs_url: "https://github.com/ariya/phantomjs/archive/{{phantomjs_version}}.tar.gz"
+
+# OCS Inventory
+ocs_server_url: "http://172.132.45.200/ocsinventory"
