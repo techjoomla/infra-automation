@@ -44,7 +44,7 @@
 
 #  - name: Install nautilus-open-terminal
 #    apt: name=nautilus-open-terminal state=present
-
+#     for testing
 #  - name: Install nautilus-image-converter
 #    apt: name=nautilus-image-converter state=present
 
