@@ -5,7 +5,7 @@ Repo that contains scripts to automate various infrastructure activities like de
 User workstations can be set up with the required development tools by running the following command in a terminal. Needs to be run by a user with sudo access. Script is tested to work on Ubuntu 16.04 & 14.04 although it might work with newer versions too.
 
 ```bash
-sudo mkdir -p /tmp/ansible-ttpl-it-automation && sudo wget -q "https://gist.githubusercontent.com/coolbung/2624e103156f7b790791/raw/ttpl_install.sh" -O /tmp/ansible-ttpl-it-automation/ttpl_install.sh && sudo chmod +x /tmp/ansible-ttpl-it-automation/ttpl_install.sh && sudo /tmp/ansible-ttpl-it-automation/ttpl_install.sh
+sudo mkdir -p /tmp/ansible-ttpl-it-automation && sudo wget -q "https://raw.githubusercontent.com/techjoomla/infra-automation/master/ttpl_install.sh" -O /tmp/ansible-ttpl-it-automation/ttpl_install.sh && sudo chmod +x /tmp/ansible-ttpl-it-automation/ttpl_install.sh && sudo /tmp/ansible-ttpl-it-automation/ttpl_install.sh
 ```
 The script will set up all the tools defined in the `environment-setup.yml` file and also set up 2 vhosts, one each for PHP5 & PHP7
 
