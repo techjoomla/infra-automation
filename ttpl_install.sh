@@ -23,7 +23,7 @@ if [[ -r /etc/lsb-release ]]; then
 	sudo wget -q https://github.com/techjoomla/infra-automation/archive/master.zip -O /tmp/master.zip
 	sudo unzip -oq /tmp/master.zip -d /tmp
 	
-	sudo ansible-playbook -i "hosts," -c local /tmp/infra-automation-master/environment-setup.yml --skip-tags "createuser,ansible,aptupdate,python,chrome" --extra-vars="server_runs_as=$non_admin_username"
+	sudo ansible-playbook -i "hosts," -c local /tmp/infra-automation-master/environment-setup.yml --skip-tags "createuser,ansible,aptupdate,python" --extra-vars="server_runs_as=$non_admin_username"
 	sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php5_name site_id=php5 php_install_version=5.6 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username"
 	sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php7_name site_id=php7 php_install_version=7.0 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username"
 	sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php71_name site_id=php71 php_install_version=7.1 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username"	
