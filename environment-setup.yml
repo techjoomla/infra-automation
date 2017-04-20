@@ -210,6 +210,10 @@
     apt: name=vlc state=present
     tags: vlc
 
+  - name: Install Sublime
+    apt: name=sublime-text-installer state=present
+    tags: devtools
+
   - name: Remove default NGINX vhosts file
     file:
       name: "/etc/nginx/sites-enabled/default"
