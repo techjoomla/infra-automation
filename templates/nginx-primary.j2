@@ -38,7 +38,7 @@ server {
   ;
 
   ssl_certificate_key      ssl/{{site_server_name[0]}}.key;
-  ssl_certificate          ssl/{{site_server_name[0]}}.combined_crt;
+  ssl_certificate          ssl/{{site_server_name[0]}}.crt;
 
   access_log  /var/log/nginx/{{ site_id }}/nginx.access.log  ttpl_nginx;
   error_log  /var/log/nginx/{{ site_id }}/nginx.error.log;
