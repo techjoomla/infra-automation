@@ -135,7 +135,7 @@
     when: site_ssl == 1 and ssl_selfsigned != 1
 
   - name: create self-signed SSL cert
-    command: openssl req -new -nodes -x509 -subj "/C=IN/ST=Maharashtra/L=Pune/O=Chaha Chaudhary and Co./CN={{site_server_name[0]}}" -days 3650 -keyout /etc/nginx/ssl/{{site_server_name}}.key -out /etc/nginx/ssl/{{site_server_name}}.crt
+    command: openssl req -new -nodes -x509 -subj "/C=IN/ST=Maharashtra/L=Pune/O=Chaha Chaudhary and Co./CN={{site_server_name[0]}}" -days 3650 -keyout /etc/nginx/ssl/{{site_server_name[0]}}.key -out /etc/nginx/ssl/{{site_server_name[0]}}.crt
     when: ssl_selfsigned == 1
     become: yes
 
