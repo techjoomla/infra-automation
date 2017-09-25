@@ -7,6 +7,27 @@
   gather_facts: true
 
   pre_tasks:
+  
+  - name: 'install zlib'
+    raw: sudo apt-get -y install zlib1g-dev
+    when: ansible_distribution_version == '16.04'
+    tags: zlib
+    
+  - name: 'install bundler'
+    raw: sudo apt-get -y install bundler
+    when: ansible_distribution_version == '16.04'
+    tags: bundler
+  
+  - name: 'install ruby'
+    raw: sudo apt-get -y install ruby-full
+    when: ansible_distribution_version == '16.04'
+    tags: ruby
+    
+  - name: 'install node'
+    raw: curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -y nodejs
+    when: ansible_distribution_version == '16.04'
+    tags: node
+  
   - name: 'install python2'
     raw: sudo apt-get -y install python-simplejson
     when: ansible_distribution_version == '16.04'
