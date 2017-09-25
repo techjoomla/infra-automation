@@ -10,27 +10,37 @@
   - name: 'install curl'
     raw: sudo apt-get -y install curl
     when: ansible_distribution_version == '16.04'
-    tags: curl
+    tags: 
+    - curl
+    - devtools
   
   - name: 'install zlib'
     raw: sudo apt-get -y install zlib1g-dev
     when: ansible_distribution_version == '16.04'
-    tags: zlib
+    tags: 
+    - zlib
+    - devtools
     
   - name: 'install bundler'
     raw: sudo apt-get -y install bundler
     when: ansible_distribution_version == '16.04'
-    tags: bundler
+    tags: 
+    - bundler
+    - devtools
   
   - name: 'install ruby'
     raw: sudo apt-get -y install ruby-full
     when: ansible_distribution_version == '16.04'
-    tags: ruby
+    tags: 
+    - ruby
+    - devtools
     
   - name: 'install node'
     raw: curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -y nodejs
     when: ansible_distribution_version == '16.04'
-    tags: node
+    tags: 
+    - node
+    - devtools
   
   - name: 'install python2'
     raw: sudo apt-get -y install python-simplejson
