@@ -7,6 +7,10 @@
   gather_facts: true
 
   pre_tasks:
+  - name: 'install curl'
+    raw: sudo apt-get -y install curl
+    when: ansible_distribution_version == '16.04'
+    tags: curl
   
   - name: 'install zlib'
     raw: sudo apt-get -y install zlib1g-dev
