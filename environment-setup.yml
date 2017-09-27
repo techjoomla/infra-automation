@@ -57,7 +57,7 @@
     - devtools
     
   - name: 'update profile file'
-    raw:  sudo touch /home/{{server_runs_as}}/.profile && sudo export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.profile && sudo chmod -R 777 /home/{{server_runs_as}}/.profile
+    raw:  sudo touch /home/{{server_runs_as}}/.profile && export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.profile && sudo chmod -R 777 /home/{{server_runs_as}}/.profile
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
