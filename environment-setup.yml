@@ -42,8 +42,22 @@
     - node
     - devtools
   
-  - name: 'Change node global installation folder'
-    raw:  mkdir ~/.npm-global &&  npm config set prefix '~/.npm-global' && touch ~/.profile && export PATH=~/.npm-global/bin:$PATH > ~/.profile && source ~/.profile
+  - name: 'Create node global installation folder'
+    raw:  mkdir ~/.npm-global &&  npm config set prefix '~/.npm-global' && touch ~/.profile
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
+    
+  - name: 'update profile file'
+    raw:  export PATH=~/.npm-global/bin:$PATH > ~/.profile 
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
+    
+  - name: 'update system variables'
+    raw:  source ~/.profile
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
