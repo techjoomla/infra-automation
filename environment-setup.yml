@@ -50,7 +50,7 @@
     - devtools
   
   - name: 'Create node global installation folder'
-    raw:  sudo mkdir /home/{{server_runs_as}}/.npm-global/ &&  sudo npm config set prefix /home/{{server_runs_as}}/.npm-global/ && sudo chmod -R 777 /home/{{server_runs_as}}/.npm-global/
+    raw:  sudo mkdir /home/{{server_runs_as}}/.npm-global/ &&  sudo npm config set prefix /home/{{server_runs_as}}/.npm-global/ && sudo chmod -R 777 /home/{{server_runs_as}}/.npm-global
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
