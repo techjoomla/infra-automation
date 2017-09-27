@@ -35,6 +35,13 @@
     - ruby
     - devtools
     
+  - name: 'install SASS / SCSS'
+    raw: sudo gem install sass --no-user-install
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - ruby
+    - devtools
+    
   - name: 'install node'
     raw: curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -y nodejs
     when: ansible_distribution_version == '16.04'
