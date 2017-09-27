@@ -50,21 +50,21 @@
     - devtools
   
   - name: 'Create node global installation folder'
-    raw:  mkdir /home/{{server_runs_as}}/.npm-global/ &&  npm config set prefix /home/{{server_runs_as}}/.npm-global/ && touch /home/{{server_runs_as}}/.profile
+    raw:  sudo mkdir /home/{{server_runs_as}}/.npm-global/ &&  sudo npm config set prefix /home/{{server_runs_as}}/.npm-global/ && sudo chmod -R 777 /home/{{server_runs_as}}/.npm-global/
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
     - devtools
     
   - name: 'update profile file'
-    raw:  export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.profile 
+    raw:  sudo touch /home/{{server_runs_as}}/.profile && sudo export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.profile && sudo chmod -R 777 /home/{{server_runs_as}}/.profile
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
     - devtools
     
   - name: 'update system variables'
-    raw:  source /home/{{server_runs_as}}/.profile
+    raw:  sudo source /home/{{server_runs_as}}/.profile
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
