@@ -70,22 +70,29 @@
     - node
     - devtools
     
-  - name: 'create profile file'
-    raw:  sudo touch /home/{{server_runs_as}}/.profile
+  - name: 'create npmrc file'
+    raw:  sudo touch /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
     - devtools
     
-  - name: 'update profile file'
-    raw:  export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.profile && chmod -R 777 /home/{{server_runs_as}}/.profile
+  - name: 'export to npmrc file'
+    raw:  export PATH=/home/{{server_runs_as}}/.npm-global/bin:$PATH > /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
     - devtools
     
+  - name: 'npmrc file permission'
+    raw:  sudo chmod -R 777 /home/{{server_runs_as}}/.npmrc
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
+  
   - name: 'update system variables'
-    raw:  source /home/{{server_runs_as}}/.profile
+    raw:  source /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
