@@ -78,7 +78,7 @@
     - devtools
     
   - name: 'export to npmrc file'
-    raw:  echo "export PATH=/home/"{{server_runs_as}}"/.npm-global/bin:"$PATH" >> /home/{{server_runs_as}}/.npmrc
+    raw:  echo "export PATH=/home/"{{server_runs_as}}"/.npm-global/bin:"$PATH"" >> /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
