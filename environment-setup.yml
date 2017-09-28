@@ -106,7 +106,7 @@
     - devtools
     
   - name: 'update system variables'
-    raw:  source /home/{{server_runs_as}}/.profile
+    raw:  /usr/bin/source /home/{{server_runs_as}}/.profile
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
