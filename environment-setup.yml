@@ -78,7 +78,7 @@
     - devtools
     
   - name: 'export to npmrc file'
-    raw:  echo "export PATH=/home/"{{server_runs_as}}"/.npm-global/bin:"$PATH"" >> /home/{{server_runs_as}}/.npmrc
+    raw:  echo "prefix=/home/"{{server_runs_as}}"/.npm-global/" >> /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
@@ -86,13 +86,6 @@
     
   - name: 'npmrc file permission'
     raw:  sudo chmod -R 777 /home/{{server_runs_as}}/.npmrc
-    when: ansible_distribution_version == '16.04'
-    tags: 
-    - node
-    - devtools
-  
-  - name: 'update system variables'
-    raw:  source /home/{{server_runs_as}}/.npmrc
     when: ansible_distribution_version == '16.04'
     tags: 
     - node
