@@ -90,6 +90,27 @@
     tags: 
     - node
     - devtools
+    
+  - name: 'add profile file'
+    raw:  sudo touch /home/{{server_runs_as}}/.profile
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
+    
+  - name: 'update file'
+    raw:  echo "export PATH=~/.npm-global/bin:$PATH" >> /home/{{server_runs_as}}/.profile
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
+    
+  - name: 'update system variables'
+    raw:  source /home/{{server_runs_as}}/.profile
+    when: ansible_distribution_version == '16.04'
+    tags: 
+    - node
+    - devtools
   
   - name: 'install python2'
     raw: sudo apt-get -y install python-simplejson
