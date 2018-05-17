@@ -156,7 +156,7 @@
     - phpcs
 
   - name: Install Joomla Standard
-    shell: "git clone https://github.com/joomla/coding-standards.git `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla"
+    shell: "git clone -b 1.x https://github.com/joomla/coding-standards.git `pear config-get php_dir`/PHP/CodeSniffer/Standards/Joomla"
     when: phpcs_joomla_path_stat.stat.exists == False
     tags:
     - devtools
