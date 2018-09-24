@@ -43,7 +43,7 @@ php_packages:
   - php{{php_install_version}}-xml
   - php{{php_install_version}}-mbstring
   - php{{php_install_version}}-mysql
-  - php{{php_install_version}}-mcrypt
+#  - php{{php_install_version}}-mcrypt
   - php{{php_install_version}}-zip
   - libpcre3-dev
 # End PHP Variables
@@ -60,7 +60,7 @@ adminer_css_download_url: "https://raw.githubusercontent.com/vrana/adminer/maste
 # Install Codeception
 composer_global_packages:
  - { name: codeception/codeception }
- 
+
 # Android SDK
 android_sdks_to_install:
   - android-24

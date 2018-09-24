@@ -49,8 +49,8 @@
 #    apt: name=nautilus-image-converter state=present
 
   roles:
-    - { 
-         role: romaincabassot.ansible-ocsinventory-agent, 
+    - {
+         role: romaincabassot.ansible-ocsinventory-agent,
          ocsinventory_launch_options: "--server={{ocs_server_url}}",
          ocsinventory_launch_after_install: true,
          ocsinventory_setup_cronjob: true,
@@ -75,6 +75,8 @@
     - { role: geerlingguy.php, php_install_version: "5.6", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "7.0", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "7.1", tags: lamp }
+    - { role: geerlingguy.php, php_install_version: "7.2", tags: lamp }
+    - { role: geerlingguy.php, php_install_version: "7.3", tags: lamp }
 
     - { role: geerlingguy.apache-php-fpm, tags: lamp }
     - role: calebwoods.bash_command
