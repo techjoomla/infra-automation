@@ -76,7 +76,7 @@
     - { role: geerlingguy.php, php_install_version: "7.0", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "7.1", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "7.2", tags: lamp }
-    # - { role: geerlingguy.php, php_install_version: "7.3", tags: lamp }
+    - { role: geerlingguy.php, php_install_version: "7.3", tags: lamp }
 
     - { role: geerlingguy.apache-php-fpm, tags: lamp }
     - role: calebwoods.bash_command
