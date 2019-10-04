@@ -64,7 +64,7 @@ The script will set up all the tools defined in the `environment-setup.yml` file
 	joomla_tmp_path="/home/USER_NAME/public_html/tmp"
 	```
   
-### Run paybook
+### Run playbook
 ```bash
 ansible-playbook -i inventory/myserver joomla.yml --vault-password-file=PATH_OF_VAULT_PASSWORD_FILE
 ```
