@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: false
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+  vars_files: ["secrets/{{site_id}}"]
+  roles:
+    - joomla
