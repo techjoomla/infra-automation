@@ -54,7 +54,7 @@ php_packages:
 #  - mysql-common-5.6
 
 # Adminer
-adminer_download_url: "http://www.adminer.org/static/download/4.2.5/adminer-4.2.5-mysql-en.php"
+adminer_download_url: "https://github.com/vrana/adminer/releases/download/v4.7.7/adminer-4.7.7-mysql.php"
 adminer_css_download_url: "https://raw.githubusercontent.com/vrana/adminer/master/designs/nette/adminer.css"
 
 # Install Codeception
