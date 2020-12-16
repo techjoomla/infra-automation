@@ -1,6 +1,6 @@
 # Ansible Role: Composer
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-composer.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-composer)
+[![CI](https://github.com/geerlingguy/ansible-role-composer/workflows/CI/badge.svg?event=push)](https://github.com/geerlingguy/ansible-role-composer/actions?query=workflow%3ACI)
 
 Installs Composer, the PHP Dependency Manager, on any Linux or UNIX system.
 
@@ -31,13 +31,25 @@ The `COMPOSER_HOME` path and directory ownership; this is the directory where gl
 
 You can install a specific release of Composer, e.g. `composer_version: '1.0.0-alpha11'`. If left empty the latest development version will be installed. Note that `composer_keep_updated` will override this variable, as it will always install the latest development version.
 
-    composer_global_packages: {}
+    composer_version_branch: '--2'
+
+You can choose which major branch of composer you wish to use. Default is `--2`. Note that `composer_keep_updated` will update the latest version available for this branch.
+
+    composer_global_packages: []
 
 A list of packages to install globally (using `composer global require`). If you want to install any packages globally, add a list item with a dictionary with the `name` of the package and a `release`, e.g. `- { name: phpunit/phpunit, release: "4.7.*" }`. The 'release' is optional, and defaults to `@stable`.
 
     composer_add_to_path: true
 
 If `true`, and if there are any configured `composer_global_packages`, the `vendor/bin` directory inside `composer_home_path` will be added to the system's default `$PATH` (for all users).
+
+    composer_project_path: /path/to/project
+
+Path to a composer project.
+
+    composer_add_project_to_path: false
+
+If `true`, and if you have configured a `composer_project_path`, the `vendor/bin` directory inside `composer_project_path` will be added to the system's default `$PATH` (for all users).
 
     composer_github_oauth_token: ''
 
@@ -65,4 +77,4 @@ MIT / BSD
 
 ## Author Information
 
-This role was created in 2014 by [Jeff Geerling](http://jeffgeerling.com/), author of [Ansible for DevOps](http://ansiblefordevops.com/).
+This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
