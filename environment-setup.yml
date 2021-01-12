@@ -48,10 +48,10 @@
 #  - name: Install nautilus-image-converter
 #    apt: name=nautilus-image-converter state=present
 
-    - role: cmprescott.chrome
-      tags:
-      - devtools
-      - chrome
+    # - role: cmprescott.chrome
+    #   tags:
+    #   - devtools
+    #   - chrome
 
     - role: geerlingguy.apache
       tags: lamp
