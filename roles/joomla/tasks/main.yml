@@ -1,0 +1,76 @@
+- name: Create configuration.php
+  template:
+    src: "roles/joomla/templates/configuration.php.j2"
+    dest: "{{ doc_root }}/configuration.php"
+    owner: "{{ server_runs_as }}"
+    group: "{{ server_runs_as_group }}"
+
+- name: Create .htversion file
+  file:
+    path: "{{ doc_root }}/.htversion"
+    state: touch
+    owner: "{{ server_runs_as }}"
+    group: "{{ server_runs_as_group }}"
+
+- name: Write commit number .htversion to file
+  shell: echo "{{ lookup('env','BUILD_NUMBER') }}" > {{ doc_root }}/.htversion
+
+- name: Delete directories
+  file:
+    path: "{{ item.dest }}"
+    state: absent
+  with_items:
+  - {dest: '{{ doc_root }}/components'}
+  - {dest: '{{ doc_root }}/libraries'}
+  - {dest: '{{ doc_root }}/modules'}
+  - {dest: '{{ doc_root }}/plugins'}
+  - {dest: '{{ doc_root }}/language'}
+  - {dest: '{{ doc_root }}/cli'}
+  - {dest: '{{ doc_root }}/includes'}
+  - {dest: '{{ doc_root }}/layouts'}
+  - {dest: '{{ doc_root }}/templates'}
+  - {dest: '{{ doc_root }}/scripts'}
+  - {dest: '{{ doc_root }}/vendor'}
+  - {dest: '{{ doc_root }}/composer.json'}
+  - {dest: '{{ doc_root }}/composer.lock'}
+
+- name: Create required directories
+  file:
+    path: "{{ item.dest }}"
+    state: directory
+  with_items:
+  - {dest: '{{ doc_root }}/cache'}
+  - {dest: '{{ doc_root }}/tmp'}
+  - {dest: '{{ doc_root }}/logs'}
+  - {dest: '{{ doc_root }}/administrator'}
+  - {dest: '{{ doc_root }}/administrator/cache'}
+
+- name: create empty index.html files
+  file: path="{{ doc_root }}/{{ item }}/index.html" state=touch owner="{{server_runs_as}}" group="{{server_runs_as_group}}"
+  with_items:
+    - "cache"
+    - "tmp"
+    - "logs"
+    - "administrator/cache"
+
+- name: Unarchive artifact on remote server
+  unarchive:
+    src: "{{ workspace | default('') }}/{{ artifact_filename }}"
+    dest: "{{ doc_root }}"
+    copy: yes
+    owner: "{{ server_runs_as }}"
+    group: "{{ server_runs_as_group }}"
+
+- name: Create all wget cronjobs
+  become: false
+  tags: cron
+  cron:
+    name: "{{item.name}}"
+    minute: "{{item.minute}}"
+    hour: "{{item.hour}}"
+    job: "/usr/bin/wget --no-check-certificate -qO- '{{item.url}}' &> /dev/null"
+  with_items: "{{ cron_list }}"
+
+- name: Run composer.json to install extensions if any
+  shell: cd {{ doc_root }} && composer install
+  when: "{{ run_composer|default(false) }}"
