@@ -7,6 +7,7 @@
   gather_facts: true
 
   pre_tasks:
+  - apt: update_cache=yes
   - name: 'install python2'
     raw: sudo apt-get -y install python-simplejson
     when: ansible_distribution_version == '16.04'
@@ -52,7 +53,7 @@
     #   tags:
     #   - devtools
     #   - chrome
-
+  roles:
     - role: geerlingguy.apache
       tags: lamp
 
@@ -191,7 +192,7 @@
     tags: vlc
 
   - name: Install Sublime
-    apt: name=sublime-text-installer state=present
+    apt: name=sublime-text state=present
     tags: devtools
 
   - name: Remove default NGINX vhosts file
