@@ -38,7 +38,7 @@ php_packages:
   - php{{php_install_version}}-gd
   - php{{php_install_version}}-curl
   - php{{php_install_version}}-imap
-  - php{{php_install_version}}-json
+#  - php{{php_install_version}}-json
   - php{{php_install_version}}-opcache
   - php{{php_install_version}}-xml
   - php{{php_install_version}}-mbstring
