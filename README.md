@@ -26,3 +26,13 @@ The script will set up all the tools defined in the `environment-setup.yml` file
   - Adminer is installed for all vhosts at /var/www/ttpl21-{php-version}.local/public/adminer
   - Can be accessed as http://{machineusername}-{php-version}.local/adminer
   - If PHPMyAdmin / Adminer is not installed, so you can download Adminer (http://adminer.org/) and place the file anywhere in your local
+
+## Installation Troubleshooting
+
+### nginx can not be started
+- Run command `sudo nginx -t`
+  - If command shows error related to SSL certifcates not found for php5 sites, run below command (replace {machineusername} with your username)
+  - ```sudo openssl req -new -nodes -x509 -subj "/C=IN/ST=Maharashtra/L=Pune/O=Chacha Chaudhary and Co./CN={machineusername}-php5.local" -days 3650 -keyout /etc/nginx/ssl/{machineusername}-php5.local.key -out /etc/nginx/ssl/{machineusername}-php5.local.crt```
+  - Then run command `sudo service nginx restart`
+  - Then retry installation
+
