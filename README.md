@@ -13,7 +13,6 @@ sudo mkdir -p /tmp/ansible-ttpl-it-automation && sudo wget -q "https://raw.githu
 The script will set up all the tools defined in the `environment-setup.yml` file and also set up vhosts, each for each php version
 
 ## Accessing sites
-
 -   Accessing sites locally
     -   To access the PHP5 localhost, navigate to https://machineusername-php5.local/ Eg: https://ttpl21-php5.local/
     -   To access the PHP7 localhost, navigate to http://machineusername-php7.local/ Eg: http://ttpl21-php7.local/
