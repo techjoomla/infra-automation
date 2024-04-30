@@ -1,9 +1,7 @@
 # Automating Common IT Infra Tasks
-
 Repo that contains scripts to automate various infrastructure activities like developer workstation setup and configuration.
 
 ## Setting up User Workstations
-
 User workstations can be set up with the required development tools by running the following command in a terminal. Needs to be run by a user with sudo access. Script is tested to work on Ubuntu 18.04, 16.04 although it might work with newer versions too.
 
 ### If you got sudo access, run this command
