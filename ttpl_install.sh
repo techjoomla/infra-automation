@@ -2,6 +2,7 @@
 
 read -p "Enter non-admin username (eg: ttpl1) : "  non_admin_username
 
+php83_name="${non_admin_username}-php83.local"
 php82_name="${non_admin_username}-php82.local"
 php81_name="${non_admin_username}-php81.local"
 php8_name="${non_admin_username}-php8.local"
@@ -52,6 +53,8 @@ if [[ -r /etc/lsb-release ]]; then
 		sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php81_name site_id=php81 php_install_version=8.1 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username" #-vvv
 
 		sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php82_name site_id=php82 php_install_version=8.2 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username" #-vvv
+
+		sudo ansible-playbook -i "localhost," -c local /tmp/infra-automation-master/create-site.yml --extra-vars="which_host=localhost site_domain=$php83_name site_id=php83 php_install_version=8.3 server_runs_as=$non_admin_username server_runs_as_group=$non_admin_username" #-vvv
 
 		#echo "Updating Launcher Icons"
 		#gsettings set com.canonical.Unity.Launcher favorites "['application://nautilus.desktop', 'application://firefox.desktop', 'application://google-chrome.desktop', 'application://geany.desktop', 'application://gnome-terminal.desktop',  'application://skype.desktop', 'application://filezilla.desktop', 'application://virtualbox.desktop', 'unity://running-apps', 'unity://expo-icon', 'unity://devices']"

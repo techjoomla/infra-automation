@@ -66,6 +66,7 @@
     - { role: geerlingguy.php, php_install_version: "8.0", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "8.1", tags: lamp }
     - { role: geerlingguy.php, php_install_version: "8.2", tags: lamp }
+    - { role: geerlingguy.php, php_install_version: "8.3", tags: lamp }
 
     - { role: geerlingguy.apache-php-fpm, tags: lamp }
     - role: calebwoods.bash_command
@@ -232,6 +233,7 @@
     - "8.0"
     - "8.1"
     - "8.2"
+    - "8.3"
 
   - name: chmod hosts file
     file:
@@ -331,6 +333,14 @@
       dest: /etc/sudoers
       state: present
       line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php8.2-fpm *"
+      validate: 'visudo -cf %s'
+    tags: devtools
+
+  - name: Allow user to restart FPM (PHP 8.3)
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      line: "{{server_runs_as}}	ALL = NOPASSWD: /etc/init.d/php8.3-fpm *"
       validate: 'visudo -cf %s'
     tags: devtools
 
