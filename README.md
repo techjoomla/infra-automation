@@ -23,6 +23,7 @@ The script will set up all the tools defined in the `environment-setup.yml` file
     -   To access the PHP8 localhost, navigate to http://machineusername-php8.local/ Eg: http://ttpl21-php8.local/
     -   To access the PHP8.1 localhost, navigate to http://machineusername-php81.local/ Eg: http://ttpl21-php81.local/
     -   To access the PHP8.2 localhost, navigate to http://machineusername-php82.local/ Eg: http://ttpl21-php82.local/
+    -   To access the PHP8.3 localhost, navigate to http://machineusername-php83.local/ Eg: http://ttpl21-php83.local/
 -   The files for these are present at /var/www/{machineusername}-{php-version}.local/public
 -   Accessing database
     -   Adminer is installed for all vhosts at /var/www/ttpl21-{php-version}.local/public/adminer

@@ -13,7 +13,7 @@
     private: no
 
   - name: "php_install_version"
-    prompt: "PHP Version. Available options are 5.6 or 7.0"
+    prompt: "PHP Version. Available options are 5.6 or 8.3"
     private: no
 
   tasks:
